@@ -25,29 +25,22 @@ object ReadthelatestFeedfile extends App {
 import sparkSess.implicits._
   val readSelectTabCol = readfromDB.select("path").filter("seq=1")
 
-  //println("-------->"+readSelectTabCol)
+
 
   val selectCols = readSelectTabCol.select("path").map{
     row=>row.getString(0)
   }.first()
 
- //val cols1= selectCols.foreach(row=>row.toString)
-
-  println("------>"+selectCols)
 
   val tbl=selectCols.substring(57,83)
 
  val readthecsv = sparkSess.read.format("csv").option("header","true").load(selectCols)
 
-  //println(readSelectTabCol.collect
-
+ 
   readthecsv.show(5)
   val mode1 = "overwrite"
 
   readthecsv.write.mode(mode1).jdbc(url, tbl, prop)
 
-
-
- // val readSelectCol = readfromDB.select(co)
 
 }
